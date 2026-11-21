@@ -1,19 +1,11 @@
 import { useState } from "react";
-import { mockCategories } from "./data/mockCategories";
-import { mockCoins } from "./data/mockCoins";
-import { mockGlobal } from "./data/mockGlobal";
+import { CoinsTableContainer } from "./components/containers/CoinsTableContainer";
+import { MarketOverviewContainer } from "./components/containers/MarketOverviewContainer";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
 import { Section } from "./components/layout/Section";
-import { categoriesToOptions } from "./mappers/categoriesToOptions";
-import { globalToKpis } from "./mappers/globalToKpis";
 import { Counter } from "./components/widgets/Counter";
-import { FilteredList } from "./components/widgets/FilteredList";
-import { KpiCard } from "./components/widgets/KpiCard";
 import { ThemeToggle } from "./components/widgets/ThemeToggle";
 import type { ThemeMode } from "./types/dashboard";
-
-const kpis = globalToKpis(mockGlobal);
-const categoryOptions = categoriesToOptions(mockCategories);
 
 function App() {
   const [mode, setMode] = useState<ThemeMode>("light");
@@ -25,11 +17,7 @@ function App() {
   return (
     <DashboardLayout mode={mode}>
       <Section title="Market Overview">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-          {kpis.map((kpi) => (
-            <KpiCard key={kpi.id} title={kpi.title} value={kpi.value} change={kpi.change} />
-          ))}
-        </div>
+        <MarketOverviewContainer />
       </Section>
       <Section title="Controls">
         <div className="flex flex-wrap gap-4">
@@ -38,7 +26,7 @@ function App() {
         </div>
       </Section>
       <Section title="Top Coins">
-        <FilteredList items={mockCoins} categories={categoryOptions} />
+        <CoinsTableContainer />
       </Section>
     </DashboardLayout>
   );
