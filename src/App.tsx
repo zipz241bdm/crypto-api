@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { CoinsTableContainer } from "./components/containers/CoinsTableContainer";
-import { MarketOverviewContainer } from "./components/containers/MarketOverviewContainer";
+import { CoinsExplorerContainer } from "./components/containers/CoinsExplorerContainer";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
 import { Section } from "./components/layout/Section";
 import { Counter } from "./components/widgets/Counter";
@@ -16,18 +15,13 @@ function App() {
 
   return (
     <DashboardLayout mode={mode}>
-      <Section title="Market Overview">
-        <MarketOverviewContainer />
-      </Section>
       <Section title="Controls">
         <div className="flex flex-wrap gap-4">
           <ThemeToggle mode={mode} onToggle={handleToggle} />
           <Counter label="Watchlist Size" initialValue={0} step={1} />
         </div>
       </Section>
-      <Section title="Top Coins">
-        <CoinsTableContainer />
-      </Section>
+      <CoinsExplorerContainer />
     </DashboardLayout>
   );
 }
