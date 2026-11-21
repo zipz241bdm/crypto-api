@@ -26,3 +26,11 @@ export function getChangeColor(change: number | null): string {
   if (change == null) return "";
   return change >= 0 ? "text-green-600" : "text-red-600";
 }
+
+export function formatCompactUsd(value: number | null): string {
+  if (value == null) return "-";
+  if (value >= 1_000_000_000_000) return `$${(value / 1_000_000_000_000).toFixed(1)}T`;
+  if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(1)}B`;
+  if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+  return `$${value.toFixed(2)}`;
+}
