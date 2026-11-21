@@ -12,3 +12,10 @@ export interface CategoryOption {
   name: string;
   coinIds: string[];
 }
+
+export type CoinSortKey =
+  | "market_cap_rank"
+  | "name"
+  | "current_price"
+  | "price_change_percentage_24h"
+  | "market_cap";
