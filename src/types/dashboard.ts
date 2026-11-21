@@ -7,12 +7,6 @@ export interface KpiItem {
 
 export type ThemeMode = "light" | "dark";
 
-export interface CategoryOption {
-  id: string;
-  name: string;
-  coinIds: string[];
-}
-
 export type CoinSortKey =
   | "market_cap_rank"
   | "name"
