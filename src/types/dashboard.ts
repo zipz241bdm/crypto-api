@@ -1,3 +1,5 @@
+import type { CoinsMarketsOrder } from "./coingecko";
+
 export interface KpiItem {
   id: string;
   title: string;
@@ -13,3 +15,15 @@ export type CoinSortKey =
   | "current_price"
   | "price_change_percentage_24h"
   | "market_cap";
+
+export interface CoinFilters {
+  search: string;
+  category: string;
+  order: CoinsMarketsOrder;
+  limit: string;
+}
+
+export interface SelectOption<T extends string = string> {
+  value: T;
+  label: string;
+}
