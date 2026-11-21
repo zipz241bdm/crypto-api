@@ -2,6 +2,15 @@ const BASE_URL = "https://api.coingecko.com/api/v3";
 
 const DEMO_API_KEY = import.meta.env.VITE_COINGECKO_DEMO_KEY as string | undefined;
 
+const CACHE_TTL_MS = 60_000;
+const cache = new Map<string, { expiresAt: number; data: unknown }>();
+const inFlight = new Map<string, Promise<unknown>>();
+
+export function clearRequestCache(): void {
+  cache.clear();
+  inFlight.clear();
+}
+
 export class ApiError extends Error {
   readonly status: number | null;
 
@@ -54,12 +63,21 @@ interface RequestOptions {
   signal?: AbortSignal;
 }
 
-export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { params, signal } = options;
+function withAbort<T>(promise: Promise<T>, signal?: AbortSignal): Promise<T> {
+  if (!signal) return promise;
 
-  const query = params ? buildQuery(params) : "";
-  const url = `${BASE_URL}${path}${query ? `?${query}` : ""}`;
+  return new Promise<T>((resolve, reject) => {
+    const onAbort = () => reject(new DOMException("The request was aborted.", "AbortError"));
+    if (signal.aborted) {
+      onAbort();
+      return;
+    }
+    signal.addEventListener("abort", onAbort, { once: true });
+    promise.then(resolve, reject).finally(() => signal.removeEventListener("abort", onAbort));
+  });
+}
 
+async function fetchJson<T>(url: string): Promise<T> {
   const headers: Record<string, string> = { Accept: "application/json" };
   if (DEMO_API_KEY) {
     headers["x-cg-demo-api-key"] = DEMO_API_KEY;
@@ -67,9 +85,8 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
 
   let response: Response;
   try {
-    response = await fetch(url, { headers, signal });
+    response = await fetch(url, { headers });
   } catch (error) {
-    if (isAbortError(error)) throw error;
     throw new ApiError("Could not reach CoinGecko. Wait a minute and try again.", null, error);
   }
 
@@ -80,7 +97,31 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   try {
     return (await response.json()) as T;
   } catch (error) {
-    if (isAbortError(error)) throw error;
     throw new ApiError("The server returned an invalid response.", response.status, error);
   }
+}
+
+export function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+  const { params, signal } = options;
+
+  const query = params ? buildQuery(params) : "";
+  const url = `${BASE_URL}${path}${query ? `?${query}` : ""}`;
+
+  const cached = cache.get(url);
+  if (cached && cached.expiresAt > Date.now()) {
+    return withAbort(Promise.resolve(cached.data as T), signal);
+  }
+
+  let pending = inFlight.get(url) as Promise<T> | undefined;
+  if (!pending) {
+    pending = fetchJson<T>(url)
+      .then((data) => {
+        cache.set(url, { expiresAt: Date.now() + CACHE_TTL_MS, data });
+        return data;
+      })
+      .finally(() => inFlight.delete(url));
+    inFlight.set(url, pending);
+  }
+
+  return withAbort(pending, signal);
 }
