@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { DEFAULT_FILTERS } from "../constants/filterOptions";
 import type { CoinFilters } from "../types/dashboard";
@@ -20,7 +20,7 @@ export function useCoinFilters() {
     [search, category, order, limit],
   );
 
-  const resetFilters = () => reset();
+  const resetFilters = useCallback(() => reset(), [reset]);
 
   return { control, filters, isDirty, resetFilters };
 }
