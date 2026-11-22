@@ -1,13 +1,10 @@
-import type { ThemeMode } from "../../types/dashboard";
+import { useTheme } from "../../hooks/useTheme";
 
-export interface ThemeToggleProps {
-  mode: ThemeMode;
-  onToggle: () => void;
-}
+export function ThemeToggle() {
+  const { mode, toggleTheme } = useTheme();
 
-export function ThemeToggle({ mode, onToggle }: ThemeToggleProps) {
   return (
-    <button type="button" onClick={onToggle} className="rounded border px-4 py-2">
+    <button type="button" onClick={toggleTheme} className="rounded border px-4 py-2">
       {mode === "light" ? "Switch to dark" : "Switch to light"}
     </button>
   );
