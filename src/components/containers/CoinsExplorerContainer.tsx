@@ -20,17 +20,7 @@ const DEFAULT_DIRECTIONS: Partial<Record<CoinSortKey, SortDirection>> = {
 };
 
 export function CoinsExplorerContainer() {
-  const {
-    control,
-    isDirty,
-    resetFilters,
-    coins,
-    kpis,
-    isInitialLoading,
-    isRefreshing,
-    error,
-    reload,
-  } = useCoinsExplorer();
+  const { coins, kpis, isInitialLoading, isRefreshing, error, reload } = useCoinsExplorer();
   const { sortedItems, sortState, toggleSort } = useSort(coins, INITIAL_SORT, DEFAULT_DIRECTIONS);
 
   let tableContent: ReactNode;
@@ -54,7 +44,7 @@ export function CoinsExplorerContainer() {
   return (
     <>
       <Section title="Filters">
-        <FiltersPanel control={control} isDirty={isDirty} onReset={resetFilters} />
+        <FiltersPanel />
       </Section>
       <Section title="Market Overview">
         <KpiGrid kpis={kpis} />

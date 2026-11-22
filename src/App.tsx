@@ -1,3 +1,4 @@
+import { FiltersProvider } from "./contexts/FiltersProvider";
 import { CoinsExplorerContainer } from "./components/containers/CoinsExplorerContainer";
 import { DashboardLayout } from "./components/layout/DashboardLayout";
 import { Section } from "./components/layout/Section";
@@ -13,7 +14,9 @@ function App() {
           <Counter label="Watchlist Size" initialValue={0} step={1} />
         </div>
       </Section>
-      <CoinsExplorerContainer />
+      <FiltersProvider>
+        <CoinsExplorerContainer />
+      </FiltersProvider>
     </DashboardLayout>
   );
 }
