@@ -1,5 +1,7 @@
-import type { ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
+import { Link } from "react-router";
 import type { CoinMarket } from "../../types/coingecko";
+import { coinPath } from "../../router/paths";
 import type { CoinSortKey } from "../../types/dashboard";
 import { formatChange, formatCompactUsd, formatUsd, getChangeColor } from "../../utils/format";
 import type { SortState } from "../../utils/sort";
@@ -36,7 +38,9 @@ const COLUMNS: Column[] = [
           loading="lazy"
           className="h-6 w-6 rounded-full"
         />
-        <span className="font-medium">{coin.name}</span>
+        <Link to={coinPath(coin.id)} className="font-medium hover:underline">
+          {coin.name}
+        </Link>
         <span className="text-gray-500 uppercase">{coin.symbol}</span>
       </div>
     ),
@@ -78,9 +82,15 @@ export interface CoinsTableProps {
   coins: CoinMarket[];
   sortState: SortState<CoinSortKey>;
   onSort: (key: CoinSortKey) => void;
+  onSelectCoin: (coinId: string) => void;
 }
 
-export function CoinsTable({ coins, sortState, onSort }: CoinsTableProps) {
+export function CoinsTable({ coins, sortState, onSort, onSelectCoin }: CoinsTableProps) {
+  const handleRowClick = (event: MouseEvent<HTMLTableRowElement>, coinId: string) => {
+    if ((event.target as HTMLElement).closest("a, button")) return;
+    onSelectCoin(coinId);
+  };
+
   return (
     <div className="overflow-x-auto rounded border">
       <table className="w-full min-w-160 text-sm">
@@ -113,7 +123,8 @@ export function CoinsTable({ coins, sortState, onSort }: CoinsTableProps) {
           {coins.map((coin) => (
             <tr
               key={coin.id}
-              className="border-b last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-800"
+              onClick={(event) => handleRowClick(event, coin.id)}
+              className="cursor-pointer border-b last:border-b-0 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               {COLUMNS.map((column) => (
                 <td

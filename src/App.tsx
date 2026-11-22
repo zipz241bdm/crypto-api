@@ -1,23 +1,19 @@
-import { FiltersProvider } from "./contexts/FiltersProvider";
-import { CoinsExplorerContainer } from "./components/containers/CoinsExplorerContainer";
-import { DashboardLayout } from "./components/layout/DashboardLayout";
-import { Section } from "./components/layout/Section";
-import { Counter } from "./components/widgets/Counter";
-import { ThemeToggle } from "./components/widgets/ThemeToggle";
+import { Route, Routes } from "react-router";
+import { AppLayout } from "./components/layout/AppLayout";
+import { CoinDetailsPage } from "./pages/CoinDetailsPage";
+import { HomePage } from "./pages/HomePage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { ROUTES } from "./router/paths";
 
 function App() {
   return (
-    <DashboardLayout>
-      <Section title="Controls">
-        <div className="flex flex-wrap gap-4">
-          <ThemeToggle />
-          <Counter label="Watchlist Size" initialValue={0} step={1} />
-        </div>
-      </Section>
-      <FiltersProvider>
-        <CoinsExplorerContainer />
-      </FiltersProvider>
-    </DashboardLayout>
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path={ROUTES.coin} element={<CoinDetailsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   );
 }
 

@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
+import { useNavigate } from "react-router";
 import { getErrorMessage } from "../../api/client";
 import { useCoinsExplorer } from "../../hooks/useCoinsExplorer";
 import { useSort } from "../../hooks/useSort";
+import { coinPath } from "../../router/paths";
 import type { CoinSortKey } from "../../types/dashboard";
 import type { SortDirection, SortState } from "../../utils/sort";
 import { EmptyState } from "../feedback/EmptyState";
@@ -21,6 +23,7 @@ const DEFAULT_DIRECTIONS: Partial<Record<CoinSortKey, SortDirection>> = {
 
 export function CoinsExplorerContainer() {
   const { coins, kpis, isInitialLoading, isRefreshing, error, reload } = useCoinsExplorer();
+  const navigate = useNavigate();
   const { sortedItems, sortState, toggleSort } = useSort(coins, INITIAL_SORT, DEFAULT_DIRECTIONS);
 
   let tableContent: ReactNode;
@@ -36,7 +39,12 @@ export function CoinsExplorerContainer() {
         aria-busy={isRefreshing}
         className={`transition-opacity ${isRefreshing ? "opacity-60" : ""}`}
       >
-        <CoinsTable coins={sortedItems} sortState={sortState} onSort={toggleSort} />
+        <CoinsTable
+          coins={sortedItems}
+          sortState={sortState}
+          onSort={toggleSort}
+          onSelectCoin={(coinId) => navigate(coinPath(coinId))}
+        />
       </div>
     );
   }
