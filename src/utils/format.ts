@@ -34,3 +34,39 @@ export function formatCompactUsd(value: number | null): string {
   if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
   return `$${value.toFixed(2)}`;
 }
+
+export function formatSignedUsd(value: number | null): string {
+  if (value == null) return "-";
+  return `${value >= 0 ? "+" : "-"}${formatUsd(Math.abs(value))}`;
+}
+
+const numberFormatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+
+export function formatNumber(value: number | null): string {
+  if (value == null) return "-";
+  return numberFormatter.format(value);
+}
+
+export function formatDate(iso: string | null): string {
+  if (iso == null) return "-";
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "-";
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+export function formatDateTime(iso: string | null): string {
+  if (iso == null) return "-";
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "-";
+  const text = date.toLocaleString("en-US", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "UTC",
+  });
+  return `${text} UTC`;
+}
