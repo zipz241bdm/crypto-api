@@ -10,6 +10,7 @@ import { EmptyState } from "../feedback/EmptyState";
 import { ErrorState } from "../feedback/ErrorState";
 import { LoadingState } from "../feedback/LoadingState";
 import { Section } from "../layout/Section";
+import { CoinsChartContainer } from "./CoinsChartContainer";
 import { CoinsTable } from "../widgets/CoinsTable";
 import { FiltersPanel } from "../widgets/FiltersPanel";
 import { KpiGrid } from "../widgets/KpiGrid";
@@ -49,6 +50,23 @@ export function CoinsExplorerContainer() {
     );
   }
 
+  let chartContent: ReactNode;
+  if (isInitialLoading) {
+    chartContent = <LoadingState label="Loading chart..." />;
+  } else if (error !== null) {
+    chartContent = (
+      <EmptyState message="The chart is unavailable while the data cannot be loaded." />
+    );
+  } else if (coins.length === 0) {
+    chartContent = <EmptyState message="No coins to chart." />;
+  } else {
+    chartContent = (
+      <div className={`transition-opacity ${isRefreshing ? "opacity-60" : ""}`}>
+        <CoinsChartContainer coins={coins} />
+      </div>
+    );
+  }
+
   return (
     <>
       <Section title="Filters">
@@ -57,6 +75,7 @@ export function CoinsExplorerContainer() {
       <Section title="Market Overview">
         <KpiGrid kpis={kpis} />
       </Section>
+      <Section title="Chart">{chartContent}</Section>
       <Section title="Top Coins">{tableContent}</Section>
     </>
   );
