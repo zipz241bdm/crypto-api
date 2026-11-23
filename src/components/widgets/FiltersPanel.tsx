@@ -1,67 +1,57 @@
-import { Controller } from "react-hook-form";
 import { CATEGORY_OPTIONS, LIMIT_OPTIONS, ORDER_OPTIONS } from "../../constants/filterOptions";
-import { useFilters } from "../../hooks/useFilters";
+import {
+  selectFilters,
+  selectIsFiltersDirty,
+  selectResetFilters,
+  selectSetFilter,
+} from "../../store/selectors";
+import { useAppStore } from "../../store/useAppStore";
+import { CheckboxField } from "../form/CheckboxField";
 import { SelectField } from "../form/SelectField";
 import { TextField } from "../form/TextField";
 
 export function FiltersPanel() {
-  const { control, isDirty, resetFilters } = useFilters();
+  const filters = useAppStore(selectFilters);
+  const setFilter = useAppStore(selectSetFilter);
+  const resetFilters = useAppStore(selectResetFilters);
+  const isDirty = useAppStore(selectIsFiltersDirty);
 
   return (
     <form
       role="search"
       aria-label="Coin filters"
       onSubmit={(e) => e.preventDefault()}
-      className="grid grid-cols-1 items-end gap-4 sm:grid-cols-2 lg:grid-cols-5"
+      className="grid grid-cols-1 items-end gap-4 sm:grid-cols-2 lg:grid-cols-6"
     >
-      <Controller
-        control={control}
-        name="search"
-        render={({ field }) => (
-          <TextField
-            label="Search"
-            placeholder="Name or symbol"
-            description="Searches the loaded coins"
-            value={field.value}
-            onChange={field.onChange}
-          />
-        )}
+      <TextField
+        label="Search"
+        placeholder="Name or symbol"
+        description="Searches the loaded coins"
+        value={filters.search}
+        onChange={(value) => setFilter("search", value)}
       />
-      <Controller
-        control={control}
-        name="category"
-        render={({ field }) => (
-          <SelectField
-            label="Category"
-            options={CATEGORY_OPTIONS}
-            value={field.value}
-            onChange={field.onChange}
-          />
-        )}
+      <SelectField
+        label="Category"
+        options={CATEGORY_OPTIONS}
+        value={filters.category}
+        onChange={(value) => setFilter("category", value)}
       />
-      <Controller
-        control={control}
-        name="order"
-        render={({ field }) => (
-          <SelectField
-            label="Rank by"
-            options={ORDER_OPTIONS}
-            value={field.value}
-            onChange={field.onChange}
-          />
-        )}
+      <SelectField
+        label="Rank by"
+        options={ORDER_OPTIONS}
+        value={filters.order}
+        onChange={(value) => setFilter("order", value)}
       />
-      <Controller
-        control={control}
-        name="limit"
-        render={({ field }) => (
-          <SelectField
-            label="Show"
-            options={LIMIT_OPTIONS}
-            value={field.value}
-            onChange={field.onChange}
-          />
-        )}
+      <SelectField
+        label="Show"
+        options={LIMIT_OPTIONS}
+        value={filters.limit}
+        onChange={(value) => setFilter("limit", value)}
+      />
+      <CheckboxField
+        label="Favorites only"
+        checked={filters.favoritesOnly}
+        onChange={(checked) => setFilter("favoritesOnly", checked)}
       />
       <button
         type="button"

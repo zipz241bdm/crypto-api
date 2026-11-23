@@ -1,26 +1,29 @@
 import { useMemo } from "react";
 import { coinsToKpis } from "../mappers/coinsToKpis";
 import { filtersToMarketsParams } from "../mappers/filtersToMarketsParams";
+import { selectFavoriteIds, selectFilters } from "../store/selectors";
+import { useAppStore } from "../store/useAppStore";
 import type { CoinMarket } from "../types/coingecko";
 import { filterCoinsBySearch } from "../utils/filterCoins";
 import { useDebounce } from "./useDebounce";
-import { useFilters } from "./useFilters";
 import { useMarkets } from "./useMarkets";
 
 const FILTER_DEBOUNCE_MS = 400;
 const EMPTY_COINS: CoinMarket[] = [];
 
 export function useCoinsExplorer() {
-  const { filters } = useFilters();
+  const filters = useAppStore(selectFilters);
+  const favoriteIds = useAppStore(selectFavoriteIds);
   const debouncedFilters = useDebounce(filters, FILTER_DEBOUNCE_MS);
 
   const marketsParams = useMemo(() => filtersToMarketsParams(debouncedFilters), [debouncedFilters]);
   const { data, loading, error, reload } = useMarkets(marketsParams);
 
-  const coins = useMemo(
-    () => filterCoinsBySearch(data ?? EMPTY_COINS, debouncedFilters.search),
-    [data, debouncedFilters.search],
-  );
+  const { favoritesOnly } = filters;
+  const coins = useMemo(() => {
+    const searched = filterCoinsBySearch(data ?? EMPTY_COINS, debouncedFilters.search);
+    return favoritesOnly ? searched.filter((coin) => favoriteIds.includes(coin.id)) : searched;
+  }, [data, debouncedFilters.search, favoritesOnly, favoriteIds]);
   const kpis = useMemo(() => coinsToKpis(coins), [coins]);
 
   return {

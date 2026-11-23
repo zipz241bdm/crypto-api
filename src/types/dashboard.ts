@@ -21,6 +21,7 @@ export interface CoinFilters {
   category: string;
   order: CoinsMarketsOrder;
   limit: string;
+  favoritesOnly: boolean;
 }
 
 export interface SelectOption<T extends string = string> {
