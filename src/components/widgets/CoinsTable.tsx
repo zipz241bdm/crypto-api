@@ -5,17 +5,26 @@ import { coinPath } from "../../router/paths";
 import type { CoinSortKey } from "../../types/dashboard";
 import { formatChange, formatCompactUsd, formatUsd, getChangeColor } from "../../utils/format";
 import type { SortState } from "../../utils/sort";
+import { FavoriteButton } from "./FavoriteButton";
 import { SortableHeader } from "./SortableHeader";
 
 interface Column {
   id: string;
   label: string;
   align: "left" | "right";
+  hideLabel?: boolean;
   sortKey?: CoinSortKey;
   render: (coin: CoinMarket) => ReactNode;
 }
 
 const COLUMNS: Column[] = [
+  {
+    id: "favorite",
+    label: "Favorite",
+    hideLabel: true,
+    align: "left",
+    render: (coin) => <FavoriteButton coinId={coin.id} coinName={coin.name} />,
+  },
   {
     id: "rank",
     label: "#",
@@ -113,7 +122,11 @@ export function CoinsTable({ coins, sortState, onSort, onSelectCoin }: CoinsTabl
                   scope="col"
                   className={`px-3 py-2 font-medium ${column.align === "right" ? "text-right" : "text-left"}`}
                 >
-                  {column.label}
+                  {column.hideLabel ? (
+                    <span className="sr-only">{column.label}</span>
+                  ) : (
+                    column.label
+                  )}
                 </th>
               ),
             )}

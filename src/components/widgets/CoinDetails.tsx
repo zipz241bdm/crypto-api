@@ -10,6 +10,7 @@ import {
   getChangeColor,
 } from "../../utils/format";
 import { Section } from "../layout/Section";
+import { FavoriteButton } from "./FavoriteButton";
 import { StatList, type StatItem } from "./StatList";
 
 export interface CoinDetailsProps {
@@ -70,6 +71,7 @@ export function CoinDetails({ coin }: CoinDetailsProps) {
             Market cap rank #{coin.market_cap_rank ?? "-"}
           </p>
         </div>
+        <FavoriteButton coinId={coin.id} coinName={coin.name} />
         <div className="ml-auto text-right">
           <div className="text-3xl font-semibold">{formatUsd(coin.current_price)}</div>
           <div className="font-medium">
