@@ -1,11 +1,13 @@
-import { useTheme } from "../../hooks/useTheme";
+import { selectTheme, selectToggleTheme } from "../../store/selectors";
+import { useAppStore } from "../../store/useAppStore";
 
 export function ThemeToggle() {
-  const { mode, toggleTheme } = useTheme();
+  const theme = useAppStore(selectTheme);
+  const toggleTheme = useAppStore(selectToggleTheme);
 
   return (
     <button type="button" onClick={toggleTheme} className="rounded border px-4 py-2">
-      {mode === "light" ? "Switch to dark" : "Switch to light"}
+      {theme === "light" ? "Switch to dark" : "Switch to light"}
     </button>
   );
 }
