@@ -96,3 +96,14 @@ export {
   type StatCardProps,
 } from "./molecules/StatCard/StatCard";
 export { StatList, type StatListItem, type StatListProps } from "./molecules/StatList/StatList";
+
+// Organisms
+export { AppHeader, type AppHeaderProps } from "./organisms/AppHeader/AppHeader";
+export {
+  DataTable,
+  type DataTableColumn,
+  type DataTableProps,
+  type DataTableSortDirection,
+  type DataTableSortState,
+} from "./organisms/DataTable/DataTable";
+export { FilterBar, type FilterBarProps } from "./organisms/FilterBar/FilterBar";
