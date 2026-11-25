@@ -1,8 +1,6 @@
 import { getErrorMessage } from "../../api/client";
+import { ErrorState, LoadingState, NotFoundState } from "../../design-system";
 import { useCoinDetails } from "../../hooks/useCoinDetails";
-import { ErrorState } from "../feedback/ErrorState";
-import { LoadingState } from "../feedback/LoadingState";
-import { NotFoundState } from "../feedback/NotFoundState";
 import { CoinDetails } from "../widgets/CoinDetails";
 
 export interface CoinDetailsContainerProps {

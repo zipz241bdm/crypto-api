@@ -5,6 +5,7 @@ import {
   CHART_METRIC_OPTIONS,
   CHART_TYPE_OPTIONS,
 } from "../../constants/chartOptions";
+import { EmptyState, FormField, SegmentedControl, Select, Stack, Text } from "../../design-system";
 import { coinsToChartData } from "../../mappers/coinsToChartData";
 import { coinsToPieRings } from "../../mappers/coinsToPieRings";
 import {
@@ -15,10 +16,7 @@ import {
 } from "../../store/selectors";
 import { useAppStore } from "../../store/useAppStore";
 import type { CoinMarket } from "../../types/coingecko";
-import { ChartTypeToggle } from "../charts/ChartTypeToggle";
 import { CoinsChart } from "../charts/CoinsChart";
-import { EmptyState } from "../feedback/EmptyState";
-import { SelectField } from "../form/SelectField";
 
 export interface CoinsChartContainerProps {
   coins: readonly CoinMarket[];
@@ -38,21 +36,25 @@ export function CoinsChartContainer({ coins }: CoinsChartContainerProps) {
   const colorBySign = chartMetric === "price_change_percentage_24h";
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-wrap items-end gap-4">
-        <ChartTypeToggle
+    <Stack gap="md">
+      <Stack direction="row" align="end" gap="md" wrap>
+        <SegmentedControl
           label="Chart type"
           value={chartType}
           options={CHART_TYPE_OPTIONS}
-          onChange={setChartType}
+          onValueChange={setChartType}
         />
-        <SelectField
-          label="Metric"
-          options={CHART_METRIC_OPTIONS}
-          value={chartMetric}
-          onChange={setChartMetric}
-        />
-      </div>
+        <FormField label="Metric">
+          {(controlProps) => (
+            <Select
+              {...controlProps}
+              options={CHART_METRIC_OPTIONS}
+              value={chartMetric}
+              onValueChange={setChartMetric}
+            />
+          )}
+        </FormField>
+      </Stack>
       {chartType === "bar" ? (
         barData.length === 0 ? (
           <EmptyState message="No data for this metric." />
@@ -66,9 +68,9 @@ export function CoinsChartContainer({ coins }: CoinsChartContainerProps) {
               colorBySign={colorBySign}
             />
             {coins.length > barData.length && (
-              <p className="text-xs text-gray-600 dark:text-gray-400">
+              <Text size="xs" tone="muted">
                 Showing the first {barData.length} of {coins.length} coins.
-              </p>
+              </Text>
             )}
           </>
         )
@@ -83,6 +85,6 @@ export function CoinsChartContainer({ coins }: CoinsChartContainerProps) {
           colorBySign={colorBySign}
         />
       )}
-    </div>
+    </Stack>
   );
 }

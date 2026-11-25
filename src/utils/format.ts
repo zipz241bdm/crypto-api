@@ -22,9 +22,11 @@ export function formatChange(change: number | null): string {
   return `${sign}${change.toFixed(2)}%`;
 }
 
-export function getChangeColor(change: number | null): string {
-  if (change == null) return "";
-  return change >= 0 ? "text-green-600" : "text-red-600";
+export type ChangeTone = "default" | "success" | "danger";
+
+export function getChangeTone(change: number | null): ChangeTone {
+  if (change == null) return "default";
+  return change >= 0 ? "success" : "danger";
 }
 
 export function formatCompactUsd(value: number | null): string {

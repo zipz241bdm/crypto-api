@@ -1,6 +1,7 @@
+import { VisuallyHidden } from "../../design-system";
 import type { ChartDatum, PieRings } from "../../types/dashboard";
-import { BarCoinsChart } from "./BarCoinsChart";
 import { describeRings } from "../../utils/describeRings";
+import { BarCoinsChart } from "./BarCoinsChart";
 import { PieCoinsChart } from "./PieCoinsChart";
 
 interface CommonProps {
@@ -24,8 +25,8 @@ export function CoinsChart(props: CoinsChartProps) {
           .join(". ")}`;
 
   return (
-    <figure className="m-0">
-      <figcaption className="sr-only">{summary}</figcaption>
+    <figure>
+      <VisuallyHidden as="figcaption">{summary}</VisuallyHidden>
       {props.type === "bar" ? (
         <BarCoinsChart
           data={props.data}

@@ -1,11 +1,11 @@
-import { Link } from "react-router";
+import { TextLink } from "../../design-system";
 import { ROUTES } from "../../router/paths";
 
 export function BackLink() {
   return (
-    <Link to={ROUTES.home} className="inline-flex w-fit items-center gap-1 hover:underline">
-      <span aria-hidden="true">←</span>
-      <span>Back to dashboard</span>
-    </Link>
+    <TextLink to={ROUTES.home} tone="default">
+      <span aria-hidden="true">← </span>
+      Back to dashboard
+    </TextLink>
   );
 }
