@@ -6,6 +6,7 @@ export const DEFAULT_FILTERS: CoinFilters = {
   category: "",
   order: "market_cap_desc",
   limit: "50",
+  favoritesOnly: false,
 };
 
 export const CATEGORY_OPTIONS: SelectOption[] = [
