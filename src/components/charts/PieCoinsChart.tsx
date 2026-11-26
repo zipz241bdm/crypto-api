@@ -1,7 +1,13 @@
 import { Pie, PieChart, ResponsiveContainer, Tooltip, type PieLabelRenderProps } from "recharts";
+import { Stack, Swatch, Text } from "../../design-system";
 import type { PieRing, PieRings } from "../../types/dashboard";
 import { describeRings } from "../../utils/describeRings";
 import {
+  CHART_LABEL,
+  CHART_LABEL_OUTLINE,
+  CHART_SURFACE,
+  CHART_TEXT,
+  CHART_TOOLTIP_STYLE,
   NEGATIVE_COLOR,
   NEGATIVE_SHADES,
   NEUTRAL_COLOR,
@@ -54,8 +60,8 @@ function renderSliceLabel(props: PieLabelRenderProps) {
     <text
       x={Number(cx) + radius * Math.cos(angle)}
       y={Number(cy) + radius * Math.sin(angle)}
-      fill="#ffffff"
-      stroke="rgba(0, 0, 0, 0.5)"
+      fill={CHART_LABEL}
+      stroke={CHART_LABEL_OUTLINE}
       strokeWidth={2}
       paintOrder="stroke"
       textAnchor="middle"
@@ -81,7 +87,7 @@ export function PieCoinsChart({
   const sharedPieProps = {
     dataKey: "magnitude",
     nameKey: "label",
-    stroke: "Canvas",
+    stroke: CHART_SURFACE,
     isAnimationActive: false,
     label: renderSliceLabel,
     labelLine: false,
@@ -90,7 +96,7 @@ export function PieCoinsChart({
   } as const;
 
   return (
-    <div>
+    <Stack gap="xs">
       <ResponsiveContainer width="100%" height={height}>
         <PieChart>
           <Pie
@@ -112,22 +118,23 @@ export function PieCoinsChart({
               valueFormatter(item.payload.value),
               `${item.payload.name} (${valueLabel})`,
             ]}
-            contentStyle={{ backgroundColor: "Canvas", color: "CanvasText" }}
+            contentStyle={CHART_TOOLTIP_STYLE}
+            itemStyle={{ color: CHART_TEXT }}
           />
         </PieChart>
       </ResponsiveContainer>
-      <ul className="mt-2 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm">
+      <Stack as="ul" direction="row" wrap justify="center" gap="lg">
         {captions.map((caption) => (
-          <li key={caption.text} className="flex items-center gap-2">
-            <span
-              aria-hidden="true"
-              className="inline-block h-3 w-3 rounded-full"
-              style={{ backgroundColor: ringColor(caption.sign, colorBySign) }}
-            />
-            {caption.text}
+          <li key={caption.text}>
+            <Stack direction="row" align="center" gap="xs">
+              <Swatch color={ringColor(caption.sign, colorBySign)} size="sm" />
+              <Text as="span" size="sm">
+                {caption.text}
+              </Text>
+            </Stack>
           </li>
         ))}
-      </ul>
-    </div>
+      </Stack>
+    </Stack>
   );
 }

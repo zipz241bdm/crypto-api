@@ -1,6 +1,6 @@
+import { IconButton } from "../../design-system";
 import { selectAddFavorite, selectIsFavorite, selectRemoveFavorite } from "../../store/selectors";
 import { useAppStore } from "../../store/useAppStore";
-import { StarToggle } from "./StarToggle";
 
 export interface FavoriteButtonProps {
   coinId: string;
@@ -13,10 +13,13 @@ export function FavoriteButton({ coinId, coinName }: FavoriteButtonProps) {
   const removeFavorite = useAppStore(selectRemoveFavorite);
 
   return (
-    <StarToggle
-      isActive={isFavorite}
-      subject={coinName}
-      onToggle={() => (isFavorite ? removeFavorite(coinId) : addFavorite(coinId))}
-    />
+    <IconButton
+      label={`Favorite ${coinName}`}
+      pressed={isFavorite}
+      tone="favorite"
+      onClick={() => (isFavorite ? removeFavorite(coinId) : addFavorite(coinId))}
+    >
+      {isFavorite ? "★" : "☆"}
+    </IconButton>
   );
 }

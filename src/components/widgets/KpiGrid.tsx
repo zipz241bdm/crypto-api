@@ -1,16 +1,30 @@
+import { Grid, StatCard, type StatCardChange } from "../../design-system";
 import type { KpiItem } from "../../types/dashboard";
-import { KpiCard } from "./KpiCard";
+import { formatChange } from "../../utils/format";
 
 export interface KpiGridProps {
   kpis: KpiItem[];
 }
 
+function toStatChange(change: number | null | undefined): StatCardChange | undefined {
+  if (change == null) return undefined;
+  return {
+    text: formatChange(change),
+    tone: change >= 0 ? "success" : "danger",
+  };
+}
+
 export function KpiGrid({ kpis }: KpiGridProps) {
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <Grid columns={1} mdColumns={2} lgColumns={4} gap="md">
       {kpis.map((kpi) => (
-        <KpiCard key={kpi.id} title={kpi.title} value={kpi.value} change={kpi.change} />
+        <StatCard
+          key={kpi.id}
+          label={kpi.title}
+          value={kpi.value}
+          change={toStatChange(kpi.change)}
+        />
       ))}
-    </div>
+    </Grid>
   );
 }

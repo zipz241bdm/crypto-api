@@ -1,32 +1,48 @@
-export const POSITIVE_COLOR = "#16a34a";
-export const NEGATIVE_COLOR = "#dc2626";
-export const NEUTRAL_COLOR = "#2563eb";
-export const OTHER_COLOR = "#6b7280";
+export const POSITIVE_COLOR = "var(--color-chart-positive)";
+export const NEGATIVE_COLOR = "var(--color-chart-negative)";
+export const NEUTRAL_COLOR = "var(--color-chart-neutral)";
+export const OTHER_COLOR = "var(--color-chart-other)";
 
 export const POSITIVE_SHADES = [
-  "#14532d",
-  "#16a34a",
-  "#166534",
-  "#22c55e",
-  "#15803d",
-  "#4ade80",
-  "#0f766e",
+  "var(--color-chart-positive-1)",
+  "var(--color-chart-positive-2)",
+  "var(--color-chart-positive-3)",
+  "var(--color-chart-positive-4)",
+  "var(--color-chart-positive-5)",
+  "var(--color-chart-positive-6)",
+  "var(--color-chart-positive-7)",
 ];
+
 export const NEGATIVE_SHADES = [
-  "#7f1d1d",
-  "#dc2626",
-  "#991b1b",
-  "#ef4444",
-  "#b91c1c",
-  "#f87171",
-  "#9f1239",
+  "var(--color-chart-negative-1)",
+  "var(--color-chart-negative-2)",
+  "var(--color-chart-negative-3)",
+  "var(--color-chart-negative-4)",
+  "var(--color-chart-negative-5)",
+  "var(--color-chart-negative-6)",
+  "var(--color-chart-negative-7)",
 ];
+
 export const NEUTRAL_SHADES = [
-  "#1e3a8a",
-  "#2563eb",
-  "#1e40af",
-  "#3b82f6",
-  "#1d4ed8",
-  "#60a5fa",
-  "#0e7490",
+  "var(--color-chart-neutral-1)",
+  "var(--color-chart-neutral-2)",
+  "var(--color-chart-neutral-3)",
+  "var(--color-chart-neutral-4)",
+  "var(--color-chart-neutral-5)",
+  "var(--color-chart-neutral-6)",
+  "var(--color-chart-neutral-7)",
 ];
+
+export const CHART_SURFACE = "var(--color-surface-raised)";
+export const CHART_TEXT = "var(--color-text)";
+export const CHART_GRID = "var(--color-border)";
+export const CHART_AXIS = "var(--color-text-muted)";
+export const CHART_LABEL = "var(--color-chart-label)";
+export const CHART_LABEL_OUTLINE = "var(--color-chart-label-outline)";
+
+export const CHART_TOOLTIP_STYLE = {
+  backgroundColor: CHART_SURFACE,
+  color: CHART_TEXT,
+  borderColor: CHART_GRID,
+  borderRadius: "var(--radius-md)",
+} as const;

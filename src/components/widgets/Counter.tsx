@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button, Card, Stack, Text } from "../../design-system";
 
 export interface CounterProps {
   label?: string;
@@ -14,20 +15,26 @@ export function Counter({ label = "Counter", initialValue = 0, step = 1 }: Count
   const reset = () => setCount(initialValue);
 
   return (
-    <div className="rounded border p-4">
-      <div className="mb-2 text-sm text-gray-500">{label}</div>
-      <div className="mb-3 text-2xl font-semibold">{count}</div>
-      <div className="flex gap-2">
-        <button type="button" onClick={decrement} className="rounded border px-3 py-1">
-          -
-        </button>
-        <button type="button" onClick={increment} className="rounded border px-3 py-1">
-          +
-        </button>
-        <button type="button" onClick={reset} className="rounded border px-3 py-1">
-          Reset
-        </button>
-      </div>
-    </div>
+    <Card padding="md">
+      <Stack gap="sm">
+        <Text size="sm" tone="muted">
+          {label}
+        </Text>
+        <Text size="2xl" weight="semibold" numeric>
+          {count}
+        </Text>
+        <Stack direction="row" gap="xs">
+          <Button variant="secondary" size="sm" onClick={decrement}>
+            -
+          </Button>
+          <Button variant="secondary" size="sm" onClick={increment}>
+            +
+          </Button>
+          <Button variant="secondary" size="sm" onClick={reset}>
+            Reset
+          </Button>
+        </Stack>
+      </Stack>
+    </Card>
   );
 }

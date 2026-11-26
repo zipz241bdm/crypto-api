@@ -5,6 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Crypto Dashboard</title>
+    <script>
+      (function () {
+        try {
+          var saved = JSON.parse(localStorage.getItem("crypto-dashboard") || "null");
+          if (saved && saved.state && saved.state.theme === "dark") {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (error) {
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
