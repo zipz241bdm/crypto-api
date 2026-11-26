@@ -1,28 +1,19 @@
-import { useState } from "react";
-import { CoinsExplorerContainer } from "./components/containers/CoinsExplorerContainer";
-import { DashboardLayout } from "./components/layout/DashboardLayout";
-import { Section } from "./components/layout/Section";
-import { Counter } from "./components/widgets/Counter";
-import { ThemeToggle } from "./components/widgets/ThemeToggle";
-import type { ThemeMode } from "./types/dashboard";
+import { Route, Routes } from "react-router";
+import { AppLayout } from "./components/layout/AppLayout";
+import { CoinDetailsPage } from "./pages/CoinDetailsPage";
+import { HomePage } from "./pages/HomePage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { ROUTES } from "./router/paths";
 
 function App() {
-  const [mode, setMode] = useState<ThemeMode>("light");
-
-  const handleToggle = () => {
-    setMode((prev) => (prev === "light" ? "dark" : "light"));
-  };
-
   return (
-    <DashboardLayout mode={mode}>
-      <Section title="Controls">
-        <div className="flex flex-wrap gap-4">
-          <ThemeToggle mode={mode} onToggle={handleToggle} />
-          <Counter label="Watchlist Size" initialValue={0} step={1} />
-        </div>
-      </Section>
-      <CoinsExplorerContainer />
-    </DashboardLayout>
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path={ROUTES.coin} element={<CoinDetailsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   );
 }
 

@@ -1,16 +1,12 @@
-import { Controller, type Control } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { CATEGORY_OPTIONS, LIMIT_OPTIONS, ORDER_OPTIONS } from "../../constants/filterOptions";
-import type { CoinFilters } from "../../types/dashboard";
+import { useFilters } from "../../hooks/useFilters";
 import { SelectField } from "../form/SelectField";
 import { TextField } from "../form/TextField";
 
-export interface FiltersPanelProps {
-  control: Control<CoinFilters>;
-  isDirty: boolean;
-  onReset: () => void;
-}
+export function FiltersPanel() {
+  const { control, isDirty, resetFilters } = useFilters();
 
-export function FiltersPanel({ control, isDirty, onReset }: FiltersPanelProps) {
   return (
     <form
       role="search"
@@ -69,7 +65,7 @@ export function FiltersPanel({ control, isDirty, onReset }: FiltersPanelProps) {
       />
       <button
         type="button"
-        onClick={onReset}
+        onClick={resetFilters}
         disabled={!isDirty}
         className="cursor-pointer rounded border px-3 py-2 hover:bg-black hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-transparent disabled:hover:text-inherit dark:hover:bg-white dark:hover:text-black"
       >
