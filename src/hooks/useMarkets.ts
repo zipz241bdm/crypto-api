@@ -1,10 +1,8 @@
-import { DEFAULT_MARKETS_PARAMS, fetchMarkets } from "../api/coingecko";
-import type { CoinMarket } from "../types/coingecko";
-import { useApiData } from "./useApiData";
+import { fetchMarkets } from "../api/coingecko";
+import type { CoinMarket, CoinsMarketsParams } from "../types/coingecko";
+import { useFetch } from "./useFetch";
 
-const fetchDefaultMarkets = (signal: AbortSignal) => fetchMarkets(DEFAULT_MARKETS_PARAMS, signal);
-
-/** Coins with market data (GET /coins/markets). */
-export function useMarkets() {
-  return useApiData<CoinMarket[]>(fetchDefaultMarkets);
+/** Coins with market data (GET /coins/markets) for the given request params. */
+export function useMarkets(params: CoinsMarketsParams) {
+  return useFetch<CoinMarket[], CoinsMarketsParams>(fetchMarkets, params);
 }
